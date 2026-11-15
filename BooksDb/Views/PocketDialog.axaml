@@ -1,0 +1,52 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="using:BooksDb.Views"
+        x:Class="BooksDb.Views.PocketDialog"
+        Title="Unassigned photos"
+        Width="680" Height="520"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource AppBackgroundBrush}">
+    <Grid Margin="16" RowDefinitions="Auto,*,Auto">
+        <TextBlock Grid.Row="0" Classes="dialogTitle" Text="Unassigned photos"/>
+
+        <Grid Grid.Row="1">
+            <ListBox x:Name="PocketList" SelectionMode="Multiple" Background="Transparent">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="views:PocketItem">
+                        <Border Margin="4" BorderBrush="{DynamicResource BorderSubtleBrush}" BorderThickness="1" Padding="2"
+                                DoubleTapped="OnPhotoDoubleTapped">
+                            <Image Source="{Binding Thumb}" Width="150" Height="150" Stretch="Uniform"/>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <TextBlock x:Name="EmptyText" Text="No unassigned photos."
+                       IsVisible="False" Opacity="0.7"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Grid>
+
+        <Grid Grid.Row="2" ColumnDefinitions="Auto,*" Margin="0,12,0,0">
+            <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                <Button x:Name="RotateLeftButton" Width="44" Click="OnRotateLeft" IsEnabled="False"
+                        ToolTip.Tip="Rotate selected left">
+                    <PathIcon Width="16" Height="16" Data="{StaticResource Icon.RotateLeft}"/>
+                </Button>
+                <Button x:Name="RotateRightButton" Width="44" Click="OnRotateRight" IsEnabled="False"
+                        ToolTip.Tip="Rotate selected right">
+                    <PathIcon Width="16" Height="16" Data="{StaticResource Icon.RotateRight}"/>
+                </Button>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Classes="dialogButtons" Margin="0">
+                <Button x:Name="AssignButton" Content="Assign to book…" Click="OnAssign" IsEnabled="False"/>
+                <Button x:Name="RemoveButton" Content="Remove"          Click="OnRemove" IsEnabled="False"/>
+                <Button Content="Refresh" Click="OnRefresh"/>
+                <Button Content="Close"   Click="OnClose" IsCancel="True"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

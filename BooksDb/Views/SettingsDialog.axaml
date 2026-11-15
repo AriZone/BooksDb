@@ -1,0 +1,38 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="BooksDb.Views.SettingsDialog"
+        Title="Settings"
+        Width="470" SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False"
+        Background="{DynamicResource AppBackgroundBrush}">
+    <StackPanel Margin="16">
+        <TextBlock Classes="dialogTitle" Text="Settings"/>
+
+        <StackPanel Spacing="4">
+            <CheckBox x:Name="DeletePicturesCheck"
+                      Content="Delete image files from disk when a book is deleted"/>
+            <TextBlock Text="If unchecked, a deleted book's images are moved to a &quot;pictures_orphaned&quot; folder next to the database instead of being erased."
+                       TextWrapping="Wrap" Opacity="0.7" FontSize="12" Margin="28,0,0,0"/>
+        </StackPanel>
+        
+        <StackPanel Spacing="4" Margin="0,12,0,0">
+            <CheckBox x:Name="RememberWindowCheck"
+                      Content="Remember window size on exit"/>
+            <TextBlock Text="Restores the window to its last size (and maximized state) the next time you open BooksDb."
+                       TextWrapping="Wrap" Opacity="0.7" FontSize="12" Margin="28,0,0,0"/>
+        </StackPanel>
+        
+        <StackPanel Spacing="4" Margin="0,12,0,0">
+            <TextBlock Text="Preview delay (ms)"/>
+            <TextBox x:Name="PreviewDelayBox" Width="90" HorizontalAlignment="Left"/>
+            <TextBlock Text="Pause before the selected book's preview loads while you move through the list. 0 = instant."
+                       TextWrapping="Wrap" Opacity="0.7" FontSize="12"/>
+        </StackPanel>
+
+        <StackPanel Classes="dialogButtons">
+                    <Button Content="Cancel" Click="OnCancel" IsCancel="True"/>
+                    <Button Content="Save"   Click="OnSave"   IsDefault="True" Classes="accent"/>
+                </StackPanel>
+    </StackPanel>
+</Window>

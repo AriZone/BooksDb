@@ -1,0 +1,38 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="BooksDb.Views.LendDialog"
+        Title="Lend book"
+        Width="420" SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False"
+        Background="{DynamicResource AppBackgroundBrush}">
+    <StackPanel Margin="16">
+        <TextBlock Classes="dialogTitle" Text="Lend book"/>
+
+        <StackPanel Spacing="4">
+            <TextBlock Text="Borrower" FontWeight="Bold"/>
+            <AutoCompleteBox x:Name="BorrowerBox" FilterMode="None" MinimumPrefixLength="1"
+                             PlaceholderText="Find existing borrower…"/>
+            <TextBlock Text="…or add a new one:" Opacity="0.7" FontSize="12" Margin="0,4,0,0"/>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <TextBox x:Name="NewFirstBox" PlaceholderText="First name" Width="180"/>
+                <TextBox x:Name="NewLastBox"  PlaceholderText="Last name"  Width="180"/>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Spacing="4">
+            <TextBlock Text="Lent on" FontWeight="Bold"/>
+            <CalendarDatePicker x:Name="LendDatePicker"/>
+        </StackPanel>
+
+        <StackPanel Spacing="4">
+            <TextBlock Text="Notes (optional)" FontWeight="Bold"/>
+            <TextBox x:Name="NotesBox" AcceptsReturn="True" TextWrapping="Wrap" Height="56"/>
+        </StackPanel>
+
+        <StackPanel Classes="dialogButtons">
+                    <Button Content="Cancel" Click="OnCancel" IsCancel="True"/>
+                    <Button Content="Lend"   Click="OnLend"   IsDefault="True" Classes="accent"/>
+                </StackPanel>
+    </StackPanel>
+</Window>

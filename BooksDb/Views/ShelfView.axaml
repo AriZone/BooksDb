@@ -1,0 +1,64 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:views="using:BooksDb.Views"
+             x:Class="BooksDb.Views.ShelfView">
+
+    <!-- The outer ListBox virtualizes rows (its default panel is a
+         VirtualizingStackPanel). Each row is a flat horizontal strip of tiles.
+         Strip the row selection/hover chrome so rows don't look clickable. -->
+    <ListBox x:Name="RowsHost"
+             Focusable="False"
+             Background="Transparent"
+             BorderThickness="0"
+             Padding="0"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+             ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <ListBox.Resources>
+            <SolidColorBrush x:Key="ListBoxItemBackgroundPointerOver"          Color="Transparent"/>
+            <SolidColorBrush x:Key="ListBoxItemBackgroundPressed"              Color="Transparent"/>
+            <SolidColorBrush x:Key="ListBoxItemBackgroundSelected"             Color="Transparent"/>
+            <SolidColorBrush x:Key="ListBoxItemBackgroundSelectedPointerOver"  Color="Transparent"/>
+            <SolidColorBrush x:Key="ListBoxItemBackgroundSelectedPressed"      Color="Transparent"/>
+        </ListBox.Resources>
+        <ListBox.Styles>
+            <Style Selector="ListBoxItem">
+                <Setter Property="Padding"   Value="0"/>
+                <Setter Property="Margin"    Value="0"/>
+                <Setter Property="MinHeight" Value="0"/>
+                <Setter Property="Focusable" Value="False"/>
+            </Style>
+
+            <!-- Shelf view: hide the selected/hover ROW highlight by giving the row
+                 a bare content host (no selection chrome at all). The per-book tile
+                 ring lives on CoverTile and is unaffected.
+                 To bring the row highlight back, comment out this style. -->
+            <Style Selector="ListBoxItem">
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <ContentPresenter Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          HorizontalContentAlignment="Stretch"
+                                          VerticalContentAlignment="Stretch"/>
+                    </ControlTemplate>
+                </Setter>
+            </Style>
+            <!-- end of style to remove                     -->
+        </ListBox.Styles>
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <ItemsControl ItemsSource="{Binding}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <views:CoverTile/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+    </ListBox>
+</UserControl>

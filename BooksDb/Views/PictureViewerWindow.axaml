@@ -1,0 +1,31 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="BooksDb.Views.PictureViewerWindow"
+        Width="900" Height="700" MinWidth="320" MinHeight="240"
+        WindowStartupLocation="CenterOwner"
+        Title="Image">
+    <Grid RowDefinitions="*,Auto" Margin="8">
+        <Border Grid.Row="0" Background="{DynamicResource SurfaceStageBrush}" CornerRadius="4">
+            <Image x:Name="FullImage" Stretch="Uniform" Margin="4"/>
+        </Border>
+        <Grid Grid.Row="1" Margin="0,8,0,0" ColumnDefinitions="Auto,Auto,*,Auto,Auto,Auto">
+            <Button Grid.Column="0" x:Name="PrevBtn" Width="44" Click="OnPrev">
+                <PathIcon Width="16" Height="16" Data="{StaticResource Icon.ChevronLeft}"/>
+            </Button>
+            <Button Grid.Column="1" x:Name="NextBtn" Width="44" Margin="6,0,0,0" Click="OnNext">
+                <PathIcon Width="16" Height="16" Data="{StaticResource Icon.ChevronRight}"/>
+            </Button>
+
+            <TextBlock Grid.Column="2" x:Name="Counter" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+            <Button Grid.Column="3" x:Name="RotateLeftBtn" Width="44" Click="OnRotateLeft" ToolTip.Tip="Rotate left">
+                <PathIcon Width="16" Height="16" Data="{StaticResource Icon.RotateLeft}"/>
+            </Button>
+            <Button Grid.Column="4" x:Name="RotateRightBtn" Width="44" Margin="6,0,0,0" Click="OnRotateRight" ToolTip.Tip="Rotate right">
+                <PathIcon Width="16" Height="16" Data="{StaticResource Icon.RotateRight}"/>
+            </Button>
+
+            <Button Grid.Column="5" Content="Close" Click="OnClose" Margin="6,0,0,0"/>
+        </Grid>
+    </Grid>
+</Window>

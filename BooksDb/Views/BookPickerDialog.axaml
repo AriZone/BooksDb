@@ -1,0 +1,28 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:models="using:BooksDb.Data.Models"
+        x:Class="BooksDb.Views.BookPickerDialog"
+        Title="Assign to book"
+        Width="560" Height="460"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource AppBackgroundBrush}">
+    <Grid Margin="16" RowDefinitions="Auto,Auto,*,Auto">
+        <TextBlock Grid.Row="0" Classes="dialogTitle" Text="Assign selected photos to:"/>
+        <TextBox Grid.Row="1" x:Name="SearchBox" PlaceholderText="Search title or author…" Margin="0,0,0,8"/>
+        <DataGrid Grid.Row="2" x:Name="BooksGrid"
+                  x:DataType="models:BookListItem"
+                  AutoGenerateColumns="False" IsReadOnly="True"
+                  GridLinesVisibility="Horizontal">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Title"   Binding="{Binding Title}"         Width="*"/>
+                <DataGridTextColumn Header="Authors" Binding="{Binding Authors}"       Width="*"/>
+                <DataGridTextColumn Header="Year"    Binding="{Binding YearPublished}" Width="Auto"/>
+                <DataGridTextColumn Header="ISBN"    Binding="{Binding Isbn13}"        Width="Auto"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Row="3" Classes="dialogButtons">
+            <Button Content="Cancel" Click="OnCancel" IsCancel="True"/>
+            <Button Content="Select" Click="OnSelect" IsDefault="True" Classes="accent"/>
+        </StackPanel>
+    </Grid>
+</Window>

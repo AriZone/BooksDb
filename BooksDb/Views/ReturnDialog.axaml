@@ -1,0 +1,27 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="BooksDb.Views.ReturnDialog"
+        Title="Return book"
+        Width="380" SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False"
+        Background="{DynamicResource AppBackgroundBrush}">
+    <StackPanel Margin="16">
+        <TextBlock Classes="dialogTitle" Text="Return book"/>
+
+        <StackPanel Spacing="4">
+            <TextBlock Text="Returned on" FontWeight="Bold"/>
+            <CalendarDatePicker x:Name="ReturnDatePicker"/>
+        </StackPanel>
+
+        <StackPanel Spacing="4">
+            <TextBlock Text="Notes (optional)" FontWeight="Bold"/>
+            <TextBox x:Name="NotesBox" AcceptsReturn="True" TextWrapping="Wrap" Height="56"/>
+        </StackPanel>
+
+        <StackPanel Classes="dialogButtons">
+                    <Button Content="Cancel" Click="OnCancel" IsCancel="True"/>
+                    <Button Content="Return" Click="OnReturn" IsDefault="True" Classes="accent"/>
+                </StackPanel>
+    </StackPanel>
+</Window>

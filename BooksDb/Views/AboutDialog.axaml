@@ -1,0 +1,18 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="BooksDb.Views.AboutDialog"
+        Title="About"
+        Width="340" SizeToContent="Height"
+        WindowStartupLocation="CenterOwner" CanResize="False"
+        Background="{DynamicResource AppBackgroundBrush}">
+    <StackPanel Margin="16" Spacing="12">
+        <StackPanel Spacing="4">
+            <TextBlock x:Name="NameText"    FontSize="18" FontWeight="Bold"/>
+            <TextBlock x:Name="VersionText" Opacity="0.85"/>
+            <TextBlock x:Name="BuiltText"   Opacity="0.7" FontSize="12"/>
+        </StackPanel>
+        <StackPanel Classes="dialogButtons">
+            <Button Content="Close" Click="OnClose" IsCancel="True" IsDefault="True"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

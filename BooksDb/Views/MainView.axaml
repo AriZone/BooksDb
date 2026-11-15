@@ -1,0 +1,407 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:BooksDb.ViewModels"
+             xmlns:models="using:BooksDb.Data.Models"
+             xmlns:views="using:BooksDb.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="BooksDb.Views.MainView"
+             x:DataType="vm:MainViewModel">
+    <Design.DataContext>
+        <vm:MainViewModel />
+    </Design.DataContext>
+
+    <Grid x:Name="RootGrid" Margin="12" RowDefinitions="Auto,Auto,Auto,*,Auto">
+
+        <DockPanel Grid.Row="0" Margin="0,0,0,12">
+
+            <!-- Right cluster: search + category filter, pinned to the right edge -->
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                <TextBox x:Name="SearchBox" Text="{Binding SearchText}" PlaceholderText="Search…" Width="160"/>
+                <ComboBox ItemsSource="{Binding CategoryFilters}"
+                          SelectedItem="{Binding SelectedCategoryFilter}"
+                          MinWidth="160"/>
+                
+                <ComboBox ItemsSource="{Binding StatusFilters}"
+                          SelectedItem="{Binding SelectedStatusFilter}"
+                          MinWidth="140"/>
+                
+                <TextBlock Text="Sort:" VerticalAlignment="Center" Margin="8,0,4,0"/>
+                <ComboBox ItemsSource="{Binding SortOptions}"
+                          SelectedItem="{Binding SelectedSort}"
+                          MinWidth="110"/>
+
+                <ToggleButton IsChecked="{Binding IsShelfView}"
+                              ToolTip.Tip="Cover view"
+                              ToolTip.ShowDelay="1000"
+                              VerticalAlignment="Stretch">
+                    <PathIcon Width="16" Height="16" Data="{StaticResource Icon.ViewGrid}"/>
+                </ToggleButton>
+
+                <Button Command="{Binding ResetViewCommand}"
+                        ToolTip.Tip="Reset view"
+                        ToolTip.ShowDelay="1000"
+                        VerticalAlignment="Stretch">
+                    <PathIcon Width="16" Height="16" Data="{StaticResource Icon.FilterOff}"/>
+                </Button>
+            </StackPanel>
+
+            <!-- Left groups fill the remaining space -->
+            <StackPanel Orientation="Horizontal" Spacing="8">
+
+                <!-- Selected-book actions -->
+                <Button Content="New"    Command="{Binding NewBookCommand}"/>
+                <Button Content="Edit"   Command="{Binding EditCommand}"/>
+                <Button Content="Delete" Click="OnDeleteClick" IsEnabled="{Binding HasSelectedBook}"/>
+                <Button Content="Loans"  Click="OnLoansClick"  IsEnabled="{Binding HasSelectedBook}"/>
+
+                <Border Classes="vsep"/>
+
+                <!-- Data + settings -->
+                <DropDownButton Content="Database">
+                    <DropDownButton.Flyout>
+                        <MenuFlyout>
+                            <MenuItem Header="New…"   Click="OnNewDatabaseClick"/>
+                            <MenuItem Header="Open…"  Click="OnOpenDatabaseClick"/>
+                            <MenuItem Header="Close"  Click="OnCloseDatabaseClick"/>
+                            <Separator/>
+                            <MenuItem Header="Import…" Click="OnImportClick"/>
+                            <MenuItem Header="Export…" Click="OnExportClick"/>
+                            <Separator/>
+                            <MenuItem Header="Replace…" Click="OnReplaceClick"/>
+                        </MenuFlyout>
+                    </DropDownButton.Flyout>
+                </DropDownButton>
+                <Button Click="OnSettingsClick" ToolTip.Tip="Settings" VerticalAlignment="Stretch">
+                    <PathIcon Width="16" Height="16" Data="{StaticResource Icon.Gear}"/>
+                </Button>
+
+                <Border Classes="vsep"/>
+
+                <!-- Capture inbox -->
+                <Button Click="OnCapturesClick">
+                    <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                        <TextBlock Text="Captures" VerticalAlignment="Center"/>
+                        <Border Classes="badge" IsVisible="{Binding HasPending}"
+                                Background="{DynamicResource BadgeDangerBrush}">
+                            <TextBlock Text="{Binding PendingCount}"/>
+                        </Border>
+                    </StackPanel>
+                </Button>
+                <Button Click="OnPocketClick">
+                    <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                        <TextBlock Text="Pocket" VerticalAlignment="Center"/>
+                        <Border Classes="badge" IsVisible="{Binding HasPocket}"
+                                Background="{DynamicResource BadgeWarnBrush}">
+                            <TextBlock Text="{Binding PocketCount}"/>
+                        </Border>
+                    </StackPanel>
+                </Button>
+                
+                <Border Classes="vsep"/>
+
+                <DropDownButton Content="Help">
+                    <DropDownButton.Flyout>
+                        <MenuFlyout>
+                            <MenuItem Header="Contributors…" Click="OnContributorsClick"/>
+                            <MenuItem Header="About…"        Click="OnAboutClick"/>
+                        </MenuFlyout>
+                    </DropDownButton.Flyout>
+                </DropDownButton>
+
+            </StackPanel>
+        </DockPanel>
+
+        <ScrollViewer Grid.Row="1" IsVisible="{Binding IsFormOpen}"
+                      VerticalScrollBarVisibility="Auto" Margin="0,0,0,4">
+            <StackPanel Spacing="6">
+                <TextBox Text="{Binding NewTitle}" PlaceholderText="Title"/>
+
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding SelectedLanguage}"
+                              PlaceholderText="Language" Width="150">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="models:Language"><TextBlock Text="{Binding Name}"/></DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding SelectedOriginalLanguage}"
+                              PlaceholderText="Original language (if translated)" Width="220">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="models:Language"><TextBlock Text="{Binding Name}"/></DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+
+                <TextBox Text="{Binding OriginalTitle}" PlaceholderText="Original title (if translated)"/>
+
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBox Text="{Binding YearPublishedText}" PlaceholderText="Year published" Width="140"/>
+                    <TextBox Text="{Binding YearCopyrightText}" PlaceholderText="Year ©"          Width="110"/>
+                    <TextBox Text="{Binding PagesText}"         PlaceholderText="Pages"           Width="100"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBox Text="{Binding Isbn13}" PlaceholderText="ISBN-13" Width="180"/>
+                    <TextBox Text="{Binding Isbn10}" PlaceholderText="ISBN-10" Width="160"/>
+                    <Button Content="Fill from BN"     Click="OnBnLookupClick"/>
+                    <Button Content="Fill from Google" Click="OnGoogleLookupClick"/>
+                    <Button Content="Fill from Open Library" Click="OnOpenLibraryLookupClick"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBox Text="{Binding Edition}"         PlaceholderText="Edition"          Width="160"/>
+                    <TextBox Text="{Binding OriginalEdition}" PlaceholderText="Original edition" Width="180"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <AutoCompleteBox x:Name="PublisherBox" Width="220" FilterMode="None" MinimumPrefixLength="1"
+                                     PlaceholderText="Publisher"
+                                     Text="{Binding PublisherText}" SelectedItem="{Binding SelectedPublisher}"/>
+                    <AutoCompleteBox x:Name="CityBox" Width="160" FilterMode="None" MinimumPrefixLength="1"
+                                     PlaceholderText="City"
+                                     Text="{Binding CityText}" SelectedItem="{Binding SelectedCity}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <ComboBox ItemsSource="{Binding Covers}" SelectedItem="{Binding SelectedCover}"
+                              PlaceholderText="Cover" Width="150">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="models:Cover"><TextBlock Text="{Binding Name}"/></DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <TextBox Text="{Binding Shelf}" PlaceholderText="Shelf" Width="140"/>
+                    <CheckBox Content="Read" IsChecked="{Binding IsRead}" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBox Text="{Binding PriceText}" PlaceholderText="Price (PLN, e.g. 29,99)" Width="180"/>
+                    <TextBlock Classes="fieldlabel" Text="Bought:"/>
+                    <CalendarDatePicker SelectedDate="{Binding DateOfBuy}" Width="150"/>
+                    <TextBlock Classes="fieldlabel" Text="Last read:"/>
+                    <CalendarDatePicker SelectedDate="{Binding DateOfLastRead}" Width="150"/>
+                </StackPanel>
+
+                <TextBox Text="{Binding Description}" PlaceholderText="Description"
+                         AcceptsReturn="True" TextWrapping="Wrap" Height="56"/>
+                <TextBox Text="{Binding Notes}" PlaceholderText="Notes"
+                         AcceptsReturn="True" TextWrapping="Wrap" Height="56"/>
+
+                <TextBlock Classes="section" Text="Contributors"/>
+                <ListBox ItemsSource="{Binding Contributors}" SelectedItem="{Binding SelectedContributor}"
+                         Height="96"/>
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <AutoCompleteBox x:Name="PersonBox" Width="200" FilterMode="None" MinimumPrefixLength="1"
+                                     Text="{Binding PersonQuery}" SelectedItem="{Binding SelectedPersonSuggestion}"/>
+                    <TextBox Text="{Binding NewPersonFirst}" PlaceholderText="First name (if new)" Width="140"/>
+                    <ComboBox ItemsSource="{Binding Roles}" SelectedItem="{Binding SelectedRole}"
+                              PlaceholderText="Role" Width="130">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="models:LookupItem"><TextBlock Text="{Binding Name}"/></DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Content="Add"    Command="{Binding AddContributorCommand}"/>
+                    <Button Content="Remove" Command="{Binding RemoveContributorCommand}"/>
+                </StackPanel>
+                
+                <TextBlock Classes="section" Text="Categories"/>
+                <ListBox ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" Height="72"/>
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <AutoCompleteBox x:Name="CategoryBox" Width="240" FilterMode="None" MinimumPrefixLength="1"
+                                     Text="{Binding CategoryQuery}"/>
+                    <Button Content="Add"    Command="{Binding AddCategoryCommand}"/>
+                    <Button Content="Remove" Command="{Binding RemoveCategoryCommand}"/>
+                </StackPanel>
+                
+                <StackPanel Spacing="6" IsVisible="{Binding ShowImagePanel}">
+                    <TextBlock Classes="section" Text="Images"/>
+                    <ListBox ItemsSource="{Binding Pictures}" SelectedItem="{Binding SelectedPicture}" Height="180">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate><StackPanel Orientation="Horizontal"/></ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate x:DataType="vm:PictureItem">
+                                <Border Width="120" Margin="0,0,8,0" Padding="2" BorderThickness="1" BorderBrush="{DynamicResource BorderSubtleBrush}" CornerRadius="3">
+                                    <Grid>
+                                        <Image Source="{Binding Image}" Height="150" Stretch="Uniform"
+                                               DoubleTapped="OnPictureDoubleTapped"/>
+                                        <Border IsVisible="{Binding IsPrimary}" Background="{DynamicResource ScrimBrush}"
+                                                VerticalAlignment="Bottom" Padding="3,1">
+                                            <TextBlock Text="★ primary" Foreground="{DynamicResource StarBrush}" FontSize="11" HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button Content="Add image…"     Click="OnAddPictureClick" IsEnabled="{Binding IsEditing}"/>
+                        <Button Content="Set as primary" Command="{Binding SetPrimaryPictureCommand}"/>
+                        <Button Content="Remove"          Command="{Binding RemovePictureCommand}"/>
+                        <Button Content="Crop" Click="OnCropClick" IsEnabled="{Binding CanCrop}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,6,0,0"
+                            HorizontalAlignment="Right">
+                    <Button Content="{Binding SaveButtonText}" Click="OnSaveClick"
+                            IsEnabled="{Binding CanSave}" Classes="accent"/>
+                    <Button Content="Cancel" Command="{Binding CancelEditCommand}" Classes="accent"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <GridSplitter Grid.Row="2" IsVisible="{Binding IsFormOpen}"
+                      Height="6" HorizontalAlignment="Stretch"
+                      Background="{DynamicResource SplitterBrush}" Margin="0,0,0,4"/>
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="320"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="360" MinWidth="300"/>
+            </Grid.ColumnDefinitions>
+
+            <DataGrid x:Name="BookGrid"
+                      Grid.Column="0"
+                      IsVisible="{Binding !IsShelfView}"
+                      x:CompileBindings="False"
+                      VerticalScrollBarVisibility="Visible"
+                      Sorting="OnGridSorting"
+                      ItemsSource="{Binding BooksView}"
+                      SelectedItem="{Binding SelectedBook}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      GridLinesVisibility="Horizontal"
+                      DoubleTapped="OnBookDoubleTapped">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Title"     Binding="{Binding Title}"         SortMemberPath="Title"         Width="2*"/>
+                    <DataGridTextColumn Header="Author(s)" Binding="{Binding Authors}"       SortMemberPath="Authors"       Width="*"/>
+                    <DataGridTextColumn Header="Year"      Binding="{Binding YearPublished}" SortMemberPath="YearPublished" Width="Auto"/>
+                    <DataGridTextColumn Header="Language"  Binding="{Binding Language}"      SortMemberPath="Language"      Width="Auto"/>
+                    <DataGridTextColumn Header="Lent to"   Binding="{Binding LentTo}"        SortMemberPath="LentTo"        Width="Auto"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <views:ShelfView Grid.Column="0"
+                             x:Name="Shelf"
+                             IsVisible="{Binding IsShelfView}"
+                             Source="{Binding BooksView}"
+                             SelectedItem="{Binding SelectedBook}"
+                             ItemActivatedCommand="{Binding EditCommand}"/>
+
+            <TextBlock Grid.Column="0"
+                       Text="—  no records  —"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Opacity="0.5" FontSize="15"
+                       IsHitTestVisible="False"
+                       IsVisible="{Binding IsBookListEmpty}"/>
+
+            <GridSplitter Grid.Column="1" Width="6"
+                          Background="{DynamicResource SplitterBrush}" Margin="4,0"/>
+
+            <Border Grid.Column="2"
+                    Background="{DynamicResource AppBackgroundBrush}"
+                    BorderBrush="{DynamicResource SplitterBrush}" BorderThickness="1"
+                    CornerRadius="4" Padding="12">
+                <Panel>
+                    <TextBlock Text="—  no selection  —"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Opacity="0.5" FontSize="14"
+                               IsVisible="{Binding !HasPreview}"/>
+
+                    <ScrollViewer IsVisible="{Binding HasPreview}" VerticalScrollBarVisibility="Auto">
+                        <StackPanel Spacing="8">
+                            <Border Height="280">
+                                <Panel>
+                                    <Image Source="{Binding PreviewMainPicture.Image}" Stretch="Uniform"
+                                           IsVisible="{Binding HasPreviewImage}"
+                                           Cursor="Hand"
+                                           DoubleTapped="OnPreviewPictureDoubleTapped"/>
+                                    <Border IsVisible="{Binding !HasPreviewImage}"
+                                            Width="210" Height="270"
+                                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            CornerRadius="3" BorderThickness="1.5"
+                                            BoxShadow="0 2 8 0 #55000000">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="{Binding Preview.PlaceholderColor}"/>
+                                        </Border.Background>
+                                        <Border.BorderBrush>
+                                            <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
+                                                <GradientStop Offset="0" Color="#60FFFFFF"/>   <!-- lit top edge -->
+                                                <GradientStop Offset="1" Color="#50000000"/>   <!-- shaded bottom edge -->
+                                            </LinearGradientBrush>
+                                        </Border.BorderBrush>
+                                        <Panel Margin="16">
+                                            <PathIcon Data="{StaticResource Icon.Book}" Width="108" Height="108"
+                                                      Foreground="White" Opacity="0.12"
+                                                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            <Grid RowDefinitions="Auto,*,Auto">
+                                                <TextBlock Grid.Row="0" Text="{Binding Preview.Title}"
+                                                           Foreground="White" FontSize="16" FontWeight="SemiBold"
+                                                           TextWrapping="Wrap" TextAlignment="Center"
+                                                           MaxLines="5" TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Grid.Row="2" Text="{Binding Preview.Authors}"
+                                                           Foreground="White" Opacity="0.9" FontSize="12"
+                                                           TextWrapping="Wrap" TextAlignment="Center"
+                                                           MaxLines="2" TextTrimming="CharacterEllipsis"
+                                                           IsVisible="{Binding Preview.HasAuthors}"/>
+                                            </Grid>
+                                        </Panel>
+                                    </Border>
+                                </Panel>
+                            </Border>
+
+                            <ListBox ItemsSource="{Binding PreviewPictures}"
+                                     SelectedItem="{Binding PreviewMainPicture}"
+                                     IsVisible="{Binding HasMultiplePreviewPictures}"
+                                     Height="64" Padding="0"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                     ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate><StackPanel Orientation="Horizontal" Spacing="4"/></ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:PictureItem">
+                                        <Image Source="{Binding Image}" Width="44" Stretch="Uniform"
+                                               Cursor="Hand"
+                                               DoubleTapped="OnPreviewPictureDoubleTapped"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+
+                            <TextBlock Text="{Binding Preview.Title}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding Preview.Byline}" Opacity="0.85" TextWrapping="Wrap"
+                                       IsVisible="{Binding Preview.HasByline}"/>
+                            <TextBlock Text="{Binding Preview.PublisherLine}" Opacity="0.7" TextWrapping="Wrap"
+                                       IsVisible="{Binding Preview.HasPublisherLine}"/>
+
+                            <StackPanel Spacing="2" Margin="0,4,0,0">
+                                <TextBlock Text="{Binding Preview.Language, StringFormat='Language: {0}'}"     IsVisible="{Binding Preview.HasLanguage}"/>
+                                <TextBlock Text="{Binding Preview.Pages}"                                      IsVisible="{Binding Preview.HasPages}"/>
+                                <TextBlock Text="{Binding Preview.Isbn, StringFormat='ISBN: {0}'}"             IsVisible="{Binding Preview.HasIsbn}"/>
+                                <TextBlock Text="{Binding Preview.Categories, StringFormat='Categories: {0}'}" IsVisible="{Binding Preview.HasCategories}"/>
+                                <TextBlock Text="{Binding Preview.Shelf, StringFormat='Shelf: {0}'}"           IsVisible="{Binding Preview.HasShelf}"/>
+                                <TextBlock Text="{Binding Preview.ReadStatus, StringFormat='Status: {0}'}"/>
+                                <TextBlock Text="{Binding Preview.LentTo, StringFormat='Lent to: {0}'}"        IsVisible="{Binding Preview.HasLentTo}"/>
+                            </StackPanel>
+
+                            <StackPanel Spacing="2" Margin="0,6,0,0" IsVisible="{Binding Preview.HasDescription}">
+                                <TextBlock Text="Description" FontWeight="SemiBold" Opacity="0.7" FontSize="12"/>
+                                <TextBlock Text="{Binding Preview.Description}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                            <StackPanel Spacing="2" Margin="0,6,0,0" IsVisible="{Binding Preview.HasNotes}">
+                                <TextBlock Text="Notes" FontWeight="SemiBold" Opacity="0.7" FontSize="12"/>
+                                <TextBlock Text="{Binding Preview.Notes}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Panel>
+            </Border>
+        </Grid>
+        <TextBlock Grid.Row="4"
+                   Text="{Binding BookCountText}"
+                   FontSize="12" Opacity="0.65"
+                   Margin="2,6,0,0" VerticalAlignment="Center"/>
+    </Grid>
+</UserControl>

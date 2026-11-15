@@ -1,0 +1,53 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:BooksDb.Android"
+             x:Class="BooksDb.Android.HelperView"
+             x:DataType="vm:HelperViewModel">
+    <Grid RowDefinitions="Auto,Auto,Auto,Auto,*,Auto" Margin="16,8,16,16">
+        <TextBox Grid.Row="0" PlaceholderText="Shelf (optional)" Text="{Binding Shelf}" Margin="0,0,0,8"/>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8" Margin="0,0,0,8">
+            <TextBox Width="200" PlaceholderText="ISBN" Text="{Binding Isbn}"/>
+            <Button Content="Add" Command="{Binding AddCommand}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="8" Margin="0,0,0,12">
+            <Button Content="Capture" Click="OnCapture"/>
+            <Button Content="Free Photo" Click="OnCaptureLoose"/>
+            <Button x:Name="AspectButton" Content="Full" Click="OnCycleAspect" MinWidth="64"
+                    ToolTip.Tip="Tap to cycle capture proportions"/>
+            <Button x:Name="FastStillButton" Content="AF" Click="OnToggleFastStill" MinWidth="48"
+                    ToolTip.Tip="Tap to toggle capture metering — X = fast still (skips AF/AE), AF = full focus"/>
+        </StackPanel>
+
+        <Border Grid.Row="3" Height="280" Margin="0,0,0,12" BorderBrush="Gray" BorderThickness="1">
+            <vm:CameraPreview x:Name="Camera"/>
+        </Border>
+
+        <ListBox Grid.Row="4" ItemsSource="{Binding Captured}"
+                 SelectedItem="{Binding SelectedCaptured}">
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="vm:CapturedItem">
+                    <StackPanel Margin="0,2" Background="Transparent" Holding="OnCollectionHolding"
+                                PointerPressed="OnRowPointerPressed" PointerMoved="OnRowPointerMoved"
+                                PointerReleased="OnRowPointerReleased" PointerCaptureLost="OnRowCaptureLost">
+                        <TextBlock Text="{Binding Header}" FontWeight="SemiBold"/>
+                        <ItemsControl ItemsSource="{Binding Photos}" Margin="16,0,0,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:CapturedPhoto">
+                                    <TextBlock Text="{Binding Label}" Foreground="Gray" FontSize="13"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Grid Grid.Row="5" ColumnDefinitions="Auto,*" Margin="0,8,0,0">
+            <Button Grid.Column="0" Content="Send" Command="{Binding SendCommand}" MinWidth="90"/>
+            <TextBlock Grid.Column="1" Text="{Binding Status}" VerticalAlignment="Center"
+                       Margin="12,0,0,0" TextWrapping="Wrap"/>
+        </Grid>
+    </Grid>
+</UserControl>

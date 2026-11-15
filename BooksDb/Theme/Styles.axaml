@@ -1,0 +1,68 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- App-wide UI font: Arimo (Helvetica-metric, embedded via fonts:BooksDb).
+         FontFamily inherits, so this cascades to every control and dialog. -->
+    <Style Selector="Window">
+        <Setter Property="FontFamily" Value="fonts:BooksDb#Arimo"/>
+    </Style>
+
+    <!-- Bold subsection label (Contributors / Categories / Images …) -->
+    <Style Selector="TextBlock.section">
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Margin" Value="0,6,0,0"/>
+    </Style>
+    <!-- Count badge pill (used by Captures / Pocket; color set per instance) -->
+    <Style Selector="Border.badge">
+        <Setter Property="CornerRadius" Value="9"/>
+        <Setter Property="MinWidth" Value="18"/>
+        <Setter Property="Height" Value="18"/>
+        <Setter Property="Padding" Value="5,0"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="Border.badge > TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource OnAccentBrush}"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <!-- Vertical divider between toolbar groups -->
+    <Style Selector="Border.vsep">
+        <Setter Property="Width" Value="1"/>
+        <Setter Property="Background" Value="{DynamicResource BorderSubtleBrush}"/>
+        <Setter Property="Margin" Value="4,2"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+    </Style>
+    <!-- Muted inline field label (matches placeholder weight, stays visible) -->
+    <Style Selector="TextBlock.fieldlabel">
+        <Setter Property="Opacity" Value="0.7"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <!-- ISO 8601 dates everywhere, locale-independent (1999-11-03) -->
+    <Style Selector="CalendarDatePicker">
+        <Setter Property="SelectedDateFormat" Value="Custom"/>
+        <Setter Property="CustomDateFormatString" Value="yyyy-MM-dd"/>
+    </Style>
+    <!-- Dialog chrome -->
+    <Style Selector="TextBlock.dialogTitle">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Margin" Value="0,0,0,12"/>
+    </Style>
+    <Style Selector="StackPanel.dialogButtons">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="Spacing" Value="8"/>
+        <Setter Property="Margin" Value="0,12,0,0"/>
+    </Style>
+    <!-- Always-visible, full-width scrollbars -->
+    <Style Selector="ScrollBar">
+        <Setter Property="AllowAutoHide" Value="False"/>
+    </Style>
+    <!-- Explicit fonts for Data.Grid 
+    <Style Selector="DataGrid">
+        <Setter Property="FontFamily" Value="fonts:BooksDb#Geist"/>
+    </Style> -->
+   
+</Styles>

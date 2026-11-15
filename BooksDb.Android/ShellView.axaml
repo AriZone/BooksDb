@@ -1,0 +1,26 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:BooksDb.Android"
+             x:Class="BooksDb.Android.ShellView"
+             x:DataType="vm:ShellViewModel">
+    <Grid RowDefinitions="Auto,*">
+        <Grid Grid.Row="0" Margin="16,10,16,0" ColumnDefinitions="*,Auto" IsVisible="{Binding ShowTopBar}">
+            <TextBlock Grid.Column="0" Text="BooksDb Helper" FontSize="20" FontWeight="Bold" VerticalAlignment="Center"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" IsVisible="{Binding OnHelper}">
+                <Button Content="⊘" FontSize="18" Padding="10,4"
+                        Click="OnClearBuffer"
+                        ToolTip.Tip="Delete all photos from the buffer"/>
+                <Button Content="⚙" FontSize="18" Padding="10,4"
+                        Command="{Binding OpenSettingsCommand}"/>
+            </StackPanel>
+        </Grid>
+
+        <ContentControl Grid.Row="1" Content="{Binding CurrentPage}">
+            <ContentControl.DataTemplates>
+                <DataTemplate DataType="vm:HelperViewModel"><vm:HelperView/></DataTemplate>
+                <DataTemplate DataType="vm:SettingsViewModel"><vm:SettingsView/></DataTemplate>
+                <DataTemplate DataType="vm:GalleryViewModel"><vm:GalleryView/></DataTemplate>
+            </ContentControl.DataTemplates>
+        </ContentControl>
+    </Grid>
+</UserControl>

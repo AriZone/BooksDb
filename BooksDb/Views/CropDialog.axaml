@@ -1,0 +1,26 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="BooksDb.Views.CropDialog"
+        Title="Crop" Width="900" Height="720"
+        WindowStartupLocation="CenterOwner" Background="{DynamicResource SurfaceStageBrush}">
+    <Grid RowDefinitions="*,Auto" Margin="8">
+        <Panel Grid.Row="0" x:Name="Host" ClipToBounds="True">
+            <Image x:Name="Img" Stretch="Uniform"/>
+            <Canvas x:Name="Overlay" Background="Transparent"
+                    PointerPressed="OnPointerPressed"
+                    PointerMoved="OnPointerMoved"
+                    PointerReleased="OnPointerReleased">
+                <Rectangle x:Name="SelRect" Stroke="#FFD54F" StrokeThickness="2" Fill="#22FFFFFF" IsHitTestVisible="False"/>
+                <Rectangle x:Name="HTL" Width="14" Height="14" Fill="#FFD54F" IsHitTestVisible="False"/>
+                <Rectangle x:Name="HTR" Width="14" Height="14" Fill="#FFD54F" IsHitTestVisible="False"/>
+                <Rectangle x:Name="HBL" Width="14" Height="14" Fill="#FFD54F" IsHitTestVisible="False"/>
+                <Rectangle x:Name="HBR" Width="14" Height="14" Fill="#FFD54F" IsHitTestVisible="False"/>
+            </Canvas>
+        </Panel>
+        <StackPanel Grid.Row="1" Classes="dialogButtons">
+            <Button Content="Reset"  Click="OnReset"/>
+            <Button Content="Cancel" Click="OnCancel" IsCancel="True"/>
+            <Button Content="Apply"  Click="OnApply"  IsDefault="True" Classes="accent"/>
+        </StackPanel>
+    </Grid>
+</Window>

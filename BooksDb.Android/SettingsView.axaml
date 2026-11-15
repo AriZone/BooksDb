@@ -1,0 +1,30 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:BooksDb.Android"
+             x:Class="BooksDb.Android.SettingsView"
+             x:DataType="vm:SettingsViewModel">
+    <StackPanel Margin="16" Spacing="12">
+        <TextBlock Text="Desktop address" FontWeight="Bold"/>
+        <TextBox Text="{Binding BaseUrl}" PlaceholderText="http://192.168.1.100:8787"/>
+        <TextBlock Text="Token" FontWeight="Bold"/>
+        <TextBox Text="{Binding Token}" PlaceholderText="CaptureToken from the desktop"/>
+        <ToggleSwitch IsChecked="{Binding BeepOnScan}" Content="Beep on scan"/>
+        <TextBlock Text="Default capture proportions" FontWeight="Bold"/>
+        <ComboBox ItemsSource="{Binding AspectOptions}"
+                  SelectedItem="{Binding SelectedAspect}"
+                  HorizontalAlignment="Stretch">
+            <ComboBox.ItemTemplate>
+                <DataTemplate x:DataType="vm:AspectOption">
+                    <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <TextBlock Text="{Binding ScanRateText}" FontWeight="Bold"/>
+        <Slider Minimum="50" Maximum="1000" TickFrequency="50"
+                IsSnapToTickEnabled="True" Value="{Binding ScanIntervalMs}"/>
+        <StackPanel Orientation="Horizontal" Spacing="8">
+            <Button Content="Save" Command="{Binding SaveCommand}"/>
+            <Button Content="Back" Command="{Binding CancelCommand}"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

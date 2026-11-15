@@ -1,0 +1,23 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="BooksDb.Views.BnPickerDialog"
+        Title="Biblioteka Narodowa"
+        Width="580" Height="440"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource AppBackgroundBrush}">
+    <DockPanel Margin="16">
+        <TextBlock DockPanel.Dock="Top" Classes="dialogTitle"
+                   Text="Multiple matches — pick the right edition:"/>
+        <StackPanel DockPanel.Dock="Bottom" Classes="dialogButtons">
+            <Button Content="Cancel" IsCancel="True" Click="OnCancel"/>
+            <Button Content="Use selected" IsDefault="True" Click="OnUse" Classes="accent"/>
+        </StackPanel>
+        <ListBox x:Name="List" DoubleTapped="OnDoubleTapped">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </DockPanel>
+</Window>

@@ -1,0 +1,18 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="BooksDb.Views.MessageDialog"
+        Title="Message"
+        Width="440" MinHeight="120" SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False"
+        Background="{DynamicResource AppBackgroundBrush}">
+    <StackPanel Margin="16">
+        <TextBlock x:Name="MessageText" TextWrapping="Wrap"/>
+        <StackPanel Classes="dialogButtons">
+            <Button x:Name="CancelButton"    Content="Cancel" Click="OnCancel"    IsVisible="False" MinWidth="80" IsCancel="True"/>
+            <Button x:Name="SecondaryButton" Content="No"     Click="OnSecondary" IsVisible="False" MinWidth="80"/>
+            <Button x:Name="TertiaryButton"  Content=""       Click="OnTertiary"  IsVisible="False" MinWidth="80"/>
+            <Button x:Name="PrimaryButton"   Content="OK"     Click="OnPrimary"   MinWidth="80" Classes="accent"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="BooksDb.Android/BooksDb.Android.csproj">
+    <Deploy />
+  </Project>
+  <Project Path="BooksDb.Data/BooksDb.Data.csproj" />
+  <Project Path="BooksDb.Desktop/BooksDb.Desktop.csproj" />
+  <Project Path="BooksDb/BooksDb.csproj" />
+</Solution>

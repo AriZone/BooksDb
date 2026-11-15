@@ -1,0 +1,23 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="BooksDb.Views.ContributorsDialog"
+        Title="Contributors"
+        Width="340" SizeToContent="Height"
+        WindowStartupLocation="CenterOwner" CanResize="False"
+        Background="{DynamicResource AppBackgroundBrush}">
+    <StackPanel Margin="16" Spacing="12">
+        <StackPanel Spacing="10">
+            <StackPanel Spacing="1">
+                <TextBlock Text="Claude" FontSize="15" FontWeight="Bold"/>
+                <TextBlock Text="AI pair programmer" Opacity="0.7" FontSize="12"/>
+            </StackPanel>
+            <StackPanel Spacing="1">
+                <TextBlock Text="AriZone" FontSize="15" FontWeight="Bold"/>
+                <TextBlock Text="Author &amp; maintainer" Opacity="0.7" FontSize="12"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Classes="dialogButtons">
+            <Button Content="Close" Click="OnClose" IsCancel="True" IsDefault="True"/>
+        </StackPanel>
+    </StackPanel>
+</Window>
