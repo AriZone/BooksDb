@@ -4,7 +4,7 @@ A cross-platform personal book catalog: an Avalonia desktop application backed b
 SQLite, with an Android companion app ("BooksDb Helper") that scans ISBN barcodes
 and captures cover photos and sends them to the desktop over the local network.
 
-Built on .NET 10 and Avalonia 12. The desktop app runs on Linux and Windows.
+Built on .NET 11 and Avalonia 12. The desktop app runs on Linux and Windows.
 
 ## Features
 
@@ -23,14 +23,14 @@ Built on .NET 10 and Avalonia 12. The desktop app runs on Linux and Windows.
 
 | Project | Target | Role |
 |---|---|---|
-| `BooksDb` | `net10.0` | Shared Avalonia UI, views and view-models (MVVM) |
-| `BooksDb.Data` | `net10.0` | SQLite data layer, repositories, metadata-lookup clients, Excel import |
-| `BooksDb.Desktop` | `net10.0` | Desktop entry point; hosts the capture listener |
-| `BooksDb.Android` | `net10.0-android` | Companion app: barcode scanning + cover capture |
+| `BooksDb` | `net11.0` | Shared Avalonia UI, views and view-models (MVVM) |
+| `BooksDb.Data` | `net11.0` | SQLite data layer, repositories, metadata-lookup clients, Excel import |
+| `BooksDb.Desktop` | `net11.0` | Desktop entry point; hosts the capture listener |
+| `BooksDb.Android` | `net11.0-android` | Companion app: barcode scanning + cover capture |
 
 ## Tech stack
 
-- [.NET 10](https://dotnet.microsoft.com/) / C#
+- [.NET 11](https://dotnet.microsoft.com/) / C# 15
 - [Avalonia 12](https://avaloniaui.net/) (Fluent theme, DataGrid)
 - [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet)
 - SQLite via [Microsoft.Data.Sqlite](https://learn.microsoft.com/dotnet/standard/data/sqlite/)
@@ -41,11 +41,14 @@ Built on .NET 10 and Avalonia 12. The desktop app runs on Linux and Windows.
 
 ## Building
 
-Requires the .NET 10 SDK. For the Android companion you also need the Android workload:
+Requires the .NET 11 SDK. For the Android companion you also need the Android workload:
 
 ```sh
 dotnet workload install android
 ```
+
+The Android build compiles against API 37, so the Android SDK also needs that platform
+(`sdkmanager "platforms;android-37.0"`). The app runs on Android 7.0 (API 24) and newer.
 
 Build and run the desktop app:
 
