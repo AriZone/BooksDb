@@ -26,7 +26,7 @@ public class MainActivity : AvaloniaMainActivity
 
     // Hardware back routing: App wires this to ShellViewModel.TryHandleBack. Returns true when
     // the in-app navigation consumed the press; otherwise the OS default runs (exit).
-    public static Func<bool>? BackRequested { get; set; }
+    public static Func<bool>? HardwareBackHandler { get; set; }
 
     protected override void OnCreate(Bundle? savedInstanceState)
     {
@@ -59,7 +59,7 @@ public class MainActivity : AvaloniaMainActivity
 
         public override void HandleOnBackPressed()
         {
-            if (BackRequested?.Invoke() == true) return;   // navigated within the app
+            if (HardwareBackHandler?.Invoke() == true) return;   // navigated within the app
 
             Enabled = false;                               // nothing to pop → let the OS handle it
             Current?.OnBackPressedDispatcher.OnBackPressed();

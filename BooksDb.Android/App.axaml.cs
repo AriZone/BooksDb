@@ -14,7 +14,7 @@ public partial class App : Avalonia.Application   // qualify: 'Application' alon
         {
             var shell = new ShellViewModel();
             singleView.MainView = new ShellView { DataContext = shell };
-            MainActivity.BackRequested = shell.TryHandleBack;   // hardware back → page navigation
+            MainActivity.HardwareBackHandler = shell.TryHandleBack;   // hardware back → page navigation
         }
 
         base.OnFrameworkInitializationCompleted();
