@@ -26,6 +26,6 @@
     <PackageVersion Include="Xamarin.AndroidX.Camera.View" Version="1.6.1" />
     <PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.15" />
     <PackageVersion Include="Xamarin.Google.MLKit.BarcodeScanning" Version="117.3.0.7" />
-    <PackageVersion Include="SkiaSharp" Version="3.119.4-preview.1.1" />
+    <PackageVersion Include="SkiaSharp" Version="3.119.4" />
   </ItemGroup>
 </Project>
