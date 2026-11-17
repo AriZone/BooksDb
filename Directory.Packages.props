@@ -15,17 +15,17 @@
     <PackageVersion Include="Avalonia.iOS" Version="12.1.6" />
     <PackageVersion Include="Avalonia.Browser" Version="12.1.6" />
     <PackageVersion Include="Avalonia.Android" Version="12.1.6" />
-    <PackageVersion Include="ClosedXML" Version="0.105.0" />
-    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageVersion Include="Dapper" Version="2.1.79" />
+    <PackageVersion Include="ClosedXML" Version="0.105.1" />
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageVersion Include="Dapper" Version="2.1.89" />
     <PackageVersion Include="Microsoft.Data.Sqlite" Version="11.0.0" />
     <PackageVersion Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.5" /> <!-- inserted to avoid complaining about sql vuln -->
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="11.0.0" />
-    <PackageVersion Include="Xamarin.AndroidX.Camera.Camera2" Version="1.6.1" />
-    <PackageVersion Include="Xamarin.AndroidX.Camera.Lifecycle" Version="1.6.1" />
-    <PackageVersion Include="Xamarin.AndroidX.Camera.View" Version="1.6.1" />
+    <PackageVersion Include="Xamarin.AndroidX.Camera.Camera2" Version="1.6.2" />
+    <PackageVersion Include="Xamarin.AndroidX.Camera.Lifecycle" Version="1.6.2" />
+    <PackageVersion Include="Xamarin.AndroidX.Camera.View" Version="1.6.2" />
     <PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.15" />
-    <PackageVersion Include="Xamarin.Google.MLKit.BarcodeScanning" Version="117.3.0.7" />
+    <PackageVersion Include="Xamarin.Google.MLKit.BarcodeScanning" Version="117.3.0.9" />
     <PackageVersion Include="SkiaSharp" Version="3.119.4" />
   </ItemGroup>
 </Project>
